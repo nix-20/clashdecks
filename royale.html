@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 50 Deck Clash Royale 2025</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6e7dff, #ff6e7d);
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: auto;
+        }
+        .deck-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .deck-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .deck-card img {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background: #fff;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .popup-content img {
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+        }
+        .close-btn {
+            background: #ff6e7d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .close-btn:hover {
+            background: #ff4a5c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="deck-container"></div>
+
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <h2 id="popup-title">Nome del Deck</h2>
+        <p id="popup-cost">Costo Medio: 0.0</p>
+        <p id="popup-skill">Skill: 0</p>
+        <div id="popup-cards"></div>
+        <button class="close-btn" id="close-btn">Chiudi</button>
+    </div>
+</div>
+
+<script>
+    const decks = [
+        { name: "Log Bait", cost: 3.1, skill: 8, cards: ["Goblin Barrel","Princess","Inferno Tower","Rocket","Knight","Goblin Gang","Log","Ice Spirit"] },
+      { name: "Golem Beatdown", cost: 4.3, skill: 5, cards: ["Golem","Night Witch","Baby Dragon","Lightning","Tornado","Mega Minion","Collector","Barbarian Barrel"] },
+      { name: "Hog Cycle 2.6", cost: 2.6, skill: 9, cards: ["Hog Rider","Cannon","Ice Spirit","Skeletons","Fireball","Musketeer","Log","Ice Golem"] },
+      { name: "Royal Giant Fisherman", cost: 3.8, skill: 6, cards: ["Royal Giant","Fisherman","Mother Witch","Hunter","Lightning","Log","Skeletons","Electro Spirit"] },
+      { name: "Miner Control 2.8", cost: 2.8, skill: 9, cards: ["Colossal Miner","Wall Breakers","Bomb Tower","Poison","Magic Archer","Skeletons","Ice Spirit","Log"] },
+      { name: "X-Bow 3.0", cost: 3.0, skill: 10, cards: ["X-Bow","Tesla","Fireball","Log","Skeletons","Archers","Knight","Ice Spirit"] },
+      { name: "P.E.K.K.A Bridge Spam", cost: 4.0, skill: 7, cards: ["P.E.K.K.A","Battle Ram","Bandit","Magic Archer","Electro Wizard","Poison","Zap","Ghost"] },
+      { name: "LavaLoon", cost: 4.1, skill: 6, cards: ["Lava Hound","Balloon","Mega Minion","Tombstone","Fireball","Zap","Skeleton Dragons","Guards"] },
+      { name: "Mega Knight Miner Bait", cost: 3.5, skill: 7, cards: ["Mega Knight","Miner","Bats","Zap","Goblin Gang","Princess","Inferno Dragon","Log"] },
+      { name: "Mortar Miner Control", cost: 3.1, skill: 8, cards: ["Mortar","Miner","Bats","Skeletons","Log","Fireball","Archers","Knight"] },
+      { name: "Graveyard Freeze", cost: 3.5, skill: 7, cards: ["Graveyard","Freeze","Baby Dragon","Knight","Tornado","Poison","Barbarian Barrel","Ice Wizard"] },
+      { name: "Electro Giant Control", cost: 4.0, skill: 6, cards: ["Electro Giant","Lightning","Cannon","Tornado","Baby Dragon","Barbarian Barrel","Electro Spirit","Phoenix"] },
+      { name: "Sparky Rage", cost: 4.5, skill: 5, cards: ["Sparky","Goblin Giant","Mini P.E.K.K.A","Zap","Rage","Dark Prince","Bats","Fireball"] },
+      { name: "Royal Hogs EQ", cost: 3.0, skill: 7, cards: ["Royal Hogs","Earthquake","Fire Spirit","Cannon","Log","Archer Queen","Skeletons","Hunter"] },
+      { name: "Three Musketeers Pump", cost: 4.1, skill: 6, cards: ["Three Musketeers","Collector","Bandit","Ghost","Battle Ram","Minion Horde","Zap","Ice Golem"] },
+      { name: "Balloon Cycle 2.9", cost: 2.9, skill: 9, cards: ["Balloon","Ice Golem","Musketeer","Cannon","Skeletons","Fireball","Ice Spirit","Log"] },
+      { name: "Bowler Balloon Freeze", cost: 4.2, skill: 7, cards: ["Bowler","Balloon","Freeze","Baby Dragon","Nado","Barbarian Barrel","Ice Spirit","Tornado"] },
+      { name: "Giant Double Prince", cost: 4.0, skill: 6, cards: ["Giant","Prince","Dark Prince","Mega Minion","Miner","Zap","Poison","Bats"] },
+      { name: "Miner Poison Control", cost: 3.1, skill: 8, cards: ["Miner","Poison","Wall Breakers","Skeletons","Bomb Tower","Log","Bats","Ice Spirit"] },
+      { name: "Elixir Golem Battle Healer", cost: 3.6, skill: 5, cards: ["Elixir Golem","Battle Healer","Electro Dragon","Night Witch","Baby Dragon","Tornado","Lightning","Barbarian Barrel"] },
+      { name: "Ram Rider Control", cost: 3.9, skill: 7, cards: ["Ram Rider","Lightning","Electro Wizard","Bandit","Baby Dragon","Barbarian Barrel","Ghost","Poison"] },
+      { name: "Royal Recruits Flying Machine", cost: 3.6, skill: 6, cards: ["Royal Recruits","Flying Machine","Zappies","Fireball","Barbarian Barrel","Goblin Cage","Royal Hogs","Arrows"] },
+      { name: "Miner Balloon Cycle", cost: 3.1, skill: 8, cards: ["Miner","Balloon","Musketeer","Ice Spirit","Skeletons","Cannon","Log","Fireball"] },
+      { name: "Hog Earthquake", cost: 3.0, skill: 8, cards: ["Hog Rider","Earthquake","Firecracker","Cannon","Skeletons","Log","Ice Spirit","Knight"] },
+      { name: "Mega Minion Control", cost: 3.2, skill: 6, cards: ["Miner","Mega Minion","Poison","Fireball","Knight","Skeletons","Log","Ice Spirit"] },
+      { name: "Electro Spirit Cycle", cost: 2.8, skill: 9, cards: ["Miner","Electro Spirit","Wall Breakers","Log","Bomb Tower","Fireball","Skeletons","Bats"] },
+      { name: "Dark Prince Giant Poison", cost: 3.8, skill: 6, cards: ["Giant","Dark Prince","Miner","Poison","Zap","Mega Minion","Bats","Fireball"] },
+      { name: "Goblin Giant Double Prince", cost: 4.2, skill: 6, cards: ["Goblin Giant","Dark Prince","Prince","Miner","Zap","Lightning","Mega Minion","Minions"] },
+      { name: "LumberLoon Freeze", cost: 3.9, skill: 8, cards: ["Lumberjack","Balloon","Freeze","Baby Dragon","Tornado","Bowler","Barbarian Barrel","Electro Dragon"] },
+      { name: "Cannon Cart Graveyard", cost: 3.6, skill: 8, cards: ["Cannon Cart","Graveyard","Poison","Ice Wizard","Knight","Barbarian Barrel","Tornado","Baby Dragon"] },
+      { name: "Zap Bait", cost: 3.3, skill: 7, cards: ["Spear Goblins","Minion Horde","Goblin Gang","Zap","Fireball","Mega Minion","Princess","Miner"] },
+      { name: "Expo Rocket Cycle", cost: 3.4, skill: 10, cards: ["X-Bow","Tesla","Rocket","Skeletons","Ice Spirit","Knight","Archers","Log"] },
+      { name: "Prince Bait", cost: 3.1, skill: 8, cards: ["Prince","Goblin Barrel","Princess","Log","Zap","Fireball","Goblin Gang","Knight"] },
+      { name: "Barrel Mirror Bait", cost: 3.2, skill: 9, cards: ["Goblin Barrel","Mirror","Princess","Knight","Rocket","Goblin Gang","Log","Ice Spirit"] },
+      { name: "Royal Hogs Firecracker", cost: 3.3, skill: 7, cards: ["Royal Hogs","Firecracker","Earthquake","Log","Knight","Skeletons","Cannon","Ice Spirit"] },
+      { name: "Pekka Ram Control", cost: 4.1, skill: 7, cards: ["Pekka","Ram Rider","Poison","Magic Archer","Battle Ram","Zap","Ghost","Electro Wizard"] },
+      { name: "Phoenix Miner Poison", cost: 3.2, skill: 8, cards: ["Miner","Poison","Phoenix","Skeletons","Fireball","Bomb Tower","Log","Bats"] },
+      { name: "Valkyrie Hog Earthquake", cost: 3.0, skill: 8, cards: ["Valkyrie","Hog Rider","Earthquake","Skeletons","Ice Spirit","Cannon","Fireball","Log"] },
+      { name: "Royal Giant Lightning", cost: 3.9, skill: 6, cards: ["Royal Giant","Lightning","Fisherman","Hunter","Ghost","Skeletons","Log","Phoenix"] },
+      { name: "Lava Clone", cost: 4.0, skill: 5, cards: ["Lava Hound","Clone","Baby Dragon","Fireball","Skeleton Dragons","Guards","Zap","Flying Machine"] },
+      { name: "Balloon Freeze Rage", cost: 4.1, skill: 6, cards: ["Balloon","Freeze","Rage","Baby Dragon","Ice Spirit","Tornado","Bowler","Barbarian Barrel"] },
+      { name: "Mortar Miner Poison", cost: 3.2, skill: 8, cards: ["Mortar","Miner","Poison","Skeletons","Log","Archers","Knight","Fireball"] },
+      { name: "Royal Ghost Bridge Spam", cost: 3.6, skill: 7, cards: ["Royal Ghost","Bandit","Battle Ram","Magic Archer","Poison","Zap","Electro Wizard","Pekka"] },
+      { name: "Hog 2.9 Firecracker", cost: 2.9, skill: 9, cards: ["Hog Rider","Firecracker","Ice Spirit","Skeletons","Cannon","Log","Knight","Fireball"] },
+      { name: "Miner Wall Breakers Cycle", cost: 2.9, skill: 9, cards: ["Miner","Wall Breakers","Bomb Tower","Bats","Ice Spirit","Skeletons","Log","Fireball"] },
+      { name: "Graveyard Poison Control", cost: 3.5, skill: 7, cards: ["Graveyard","Poison","Knight","Baby Dragon","Ice Wizard","Tornado","Barbarian Barrel","Archers"] },
+      { name: "Royal Recruits Hogs", cost: 3.7, skill: 6, cards: ["Royal Recruits","Royal Hogs","Flying Machine","Zappies","Fireball","Barbarian Barrel","Goblin Cage","Arrows"] },
+      { name: "Mega Knight Ram Rider", cost: 4.1, skill: 6, cards: ["Mega Knight","Ram Rider","Lightning","Baby Dragon","Bandit","Barbarian Barrel","Ghost","Electro Wizard"] }
+    ];
+
+    const container = document.getElementById('deck-container');
+    const popup = document.getElementById('popup');
+    const popupTitle = document.getElementById('popup-title');
+    const popupCost = document.getElementById('popup-cost');
+    const popupSkill = document.getElementById('popup-skill');
+    const popupCards = document.getElementById('popup-cards');
+    const closeBtn = document.getElementById('close-btn');
+
+    function showDeck(deck) {
+        popupTitle.innerText = deck.name;
+        popupCost.innerText = "Costo Medio: " + deck.cost;
+        popupSkill.innerText = "Skill: " + deck.skill;
+        popupCards.innerHTML = "";
+        deck.cards.forEach(card => {
+            const img = document.createElement('img');
+            img.src = `https://via.placeholder.com/60?text=${encodeURIComponent(card)}`;
+            img.alt = card;
+            popupCards.appendChild(img);
+        });
+        popup.style.display = 'flex';
+    }
+
+    closeBtn.addEventListener('click', () => {
+        popup.style.display = 'none';
+    });
+
+    decks.forEach(deck => {
+        const card = document.createElement('div');
+        card.className = 'deck-card';
+        card.innerHTML = `<h3>${deck.name}</h3>`;
+        deck.cards.forEach(c => {
+            const img = document.createElement('img');
+            img.src = `https://via.placeholder.com/50?text=${encodeURIComponent(c)}`;
+            img.alt = c;
+            card.appendChild(img);
+        });
+        card.addEventListener('click', () => showDeck(deck));
+        container.appendChild(card);
+    });
+</script>
+
+</body>
+</html>
